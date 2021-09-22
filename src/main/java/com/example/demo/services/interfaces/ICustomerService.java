@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.demo.models.Customer;
 import com.example.demo.viewmodels.CustomerCreateViewModel;
+import com.example.demo.viewmodels.CustomerPageViewModel;
 import com.example.demo.viewmodels.CustomerUpdateViewModel;
 import com.example.demo.viewmodels.CustomerViewModel;
 
@@ -21,4 +22,7 @@ public interface ICustomerService {
 
 	void delete(int id);
 
+	default CustomerPageViewModel getPage() {
+		return new CustomerPageViewModel();
+	}
 }

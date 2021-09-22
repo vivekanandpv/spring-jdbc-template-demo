@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.demo.exceptions.RecordNotFoundException;
 import com.example.demo.viewmodels.CustomerCreateViewModel;
+import com.example.demo.viewmodels.CustomerPageViewModel;
 import com.example.demo.viewmodels.CustomerUpdateViewModel;
 import com.example.demo.viewmodels.CustomerViewModel;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,11 @@ public class CustomerController {
 		return ResponseEntity.ok(this.customerService.get());
 	}
 
+	@GetMapping("/as-page")
+	public ResponseEntity<CustomerPageViewModel> getPage() {
+		return ResponseEntity.ok(this.customerService.getPage());
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<CustomerViewModel> getCustomerById(@PathVariable int id) {
 		return ResponseEntity.ok(customerService.get(id));
@@ -51,15 +57,5 @@ public class CustomerController {
 		return ResponseEntity.ok().build();
 	}
 
-	@ExceptionHandler
-	public ResponseEntity<?> handleRecordNotFound(RecordNotFoundException rnef) {
-		//	logging this exception
-		return ResponseEntity.notFound().build();
-	}
 
-	@ExceptionHandler
-	public ResponseEntity<?> handleOtherExceptions(Throwable throwable) {
-		//	logging this exception
-		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
-	}
 }

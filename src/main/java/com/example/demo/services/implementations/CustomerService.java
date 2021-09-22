@@ -3,10 +3,7 @@ package com.example.demo.services.implementations;
 import com.example.demo.exceptions.RecordNotFoundException;
 import com.example.demo.models.Customer;
 import com.example.demo.repositories.IAccountRepository;
-import com.example.demo.viewmodels.AccountViewModel;
-import com.example.demo.viewmodels.CustomerCreateViewModel;
-import com.example.demo.viewmodels.CustomerUpdateViewModel;
-import com.example.demo.viewmodels.CustomerViewModel;
+import com.example.demo.viewmodels.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.repositories.ICustomerRepository;
 import com.example.demo.services.interfaces.ICustomerService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +25,17 @@ public class CustomerService implements ICustomerService {
         this.customerRepository = customerRepository;
     }
 
+    @Override
+    public CustomerPageViewModel getPage() {
+        CustomerPageViewModel vm = new CustomerPageViewModel();
+        vm.setCount(customerRepository.count());
+        vm.setCurrentIndex(1);
+        vm.setGeneratedAt(LocalDateTime.now());
+        vm.setnPages(4);
+        vm.setCustomers(get());
+
+        return vm;
+    }
 
     @Override
     public List<CustomerViewModel> get() {
