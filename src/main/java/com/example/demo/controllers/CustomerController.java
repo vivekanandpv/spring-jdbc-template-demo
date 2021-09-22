@@ -1,21 +1,14 @@
 package com.example.demo.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.exceptions.RecordNotFoundException;
+import com.example.demo.viewmodels.CustomerCreateViewModel;
+import com.example.demo.viewmodels.CustomerUpdateViewModel;
+import com.example.demo.viewmodels.CustomerViewModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.models.Customer;
 import com.example.demo.services.interfaces.ICustomerService;
@@ -32,31 +25,41 @@ public class CustomerController {
 	}
 
 	@GetMapping
-	public List<Customer> getAllCustomers() {
-		return this.customerService.getAllCustomers();
+	public ResponseEntity<List<CustomerViewModel>> getAllCustomers() {
+		return ResponseEntity.ok(this.customerService.get());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Customer> getCustomerById(@PathVariable int id) {
-		if (id < 1000) {
-			return new ResponseEntity(this.customerService.getCustomerById(id), HttpStatus.OK);
-		} else {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<CustomerViewModel> getCustomerById(@PathVariable int id) {
+		return ResponseEntity.ok(customerService.get(id));
 	}
 
 	@PostMapping
-	public Customer createCustomer(@RequestBody Customer customer) {
-		return customerService.createCustomer(customer);
+	public ResponseEntity<CustomerViewModel> createCustomer(@RequestBody CustomerCreateViewModel viewModel) {
+		return ResponseEntity.ok(customerService.create(viewModel));
 	}
 
 	@PutMapping("/{id}")
-	public Customer updateCustomer(@PathVariable int id, @RequestBody Customer customer) {
-		return this.customerService.updateCustomer(id, customer);
+	public ResponseEntity<?> updateCustomer(@PathVariable int id, @RequestBody CustomerUpdateViewModel viewModel) {
+		this.customerService.update(id, viewModel);
+		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("/{id}")
-	public String deleteCustomer(@PathVariable int id) {
-		return this.customerService.deleteCustomer(id);
+	public ResponseEntity<?> deleteCustomer(@PathVariable int id) {
+		this.customerService.delete(id);
+		return ResponseEntity.ok().build();
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<?> handleRecordNotFound(RecordNotFoundException rnef) {
+		//	logging this exception
+		return ResponseEntity.notFound().build();
+	}
+
+	@ExceptionHandler
+	public ResponseEntity<?> handleOtherExceptions(Throwable throwable) {
+		//	logging this exception
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 	}
 }

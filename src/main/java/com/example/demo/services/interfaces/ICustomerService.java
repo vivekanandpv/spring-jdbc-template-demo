@@ -3,19 +3,22 @@ package com.example.demo.services.interfaces;
 import java.util.List;
 
 import com.example.demo.models.Customer;
+import com.example.demo.viewmodels.CustomerCreateViewModel;
+import com.example.demo.viewmodels.CustomerUpdateViewModel;
+import com.example.demo.viewmodels.CustomerViewModel;
 
 public interface ICustomerService {
 
-	List<Customer> getAllCustomers();
+	List<CustomerViewModel> get();
 
-	Customer getCustomerById(int id);
+	CustomerViewModel get(int id);
 
-	Customer getCustomerById(String pan);
+	CustomerViewModel get(String pan);
 
-	Customer createCustomer(Customer customer);
+	CustomerViewModel create(CustomerCreateViewModel viewModel);
 
-	Customer updateCustomer(int id, Customer customer);
+	void update(int id, CustomerUpdateViewModel viewModel);
 
-	String deleteCustomer(int id);
+	void delete(int id);
 
 }

@@ -1,16 +1,23 @@
 package com.example.demo.models;
 
+import javax.persistence.*;
+
+@Entity
 public class Account {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
 	private String accountNumber;
 	private String accountBranch;
 	private double accountBalance;
 	private int accountType;
+
+	@ManyToOne(optional = false)
 	private Customer customer;
-	
-	public Account() {
-		
-	}
+
+	@Column(name = "customer_id", updatable = false, insertable = false)
+	private int customerId;
 	
 	public Customer getCustomer() {
 		return customer;
@@ -47,5 +54,13 @@ public class Account {
 	}
 	public void setAccountType(int accountType) {
 		this.accountType = accountType;
+	}
+
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
 }

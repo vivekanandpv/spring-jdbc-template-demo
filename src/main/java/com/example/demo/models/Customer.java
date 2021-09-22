@@ -1,46 +1,25 @@
 package com.example.demo.models;
 
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Entity
+@Table(name="customers")
 public class Customer {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String phone;
 	private boolean isActive;
-	private Set<Account> accounts;
-	
-	public Customer() {
-		
-	}
-	
-	
 
-	public boolean isActive() {
-		return isActive;
-	}
-
-
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-
-
-
-	public Set<Account> getAccounts() {
-		return accounts;
-	}
-
-
-
-	public void setAccounts(Set<Account> accounts) {
-		this.accounts = accounts;
-	}
-
-
+	@OneToMany(mappedBy = "customer")
+	private List<Account> accounts = new ArrayList<>();
 
 	public int getId() {
 		return id;
@@ -81,6 +60,20 @@ public class Customer {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
-	
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean active) {
+		isActive = active;
+	}
+
+	public List<Account> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
 }
