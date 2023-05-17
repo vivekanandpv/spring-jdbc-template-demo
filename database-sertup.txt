@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS public.customers
+(
+    id integer NOT NULL DEFAULT nextval('customers_id_seq'::regclass),
+    first_name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    last_name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    phone character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    active boolean NOT NULL,
+    CONSTRAINT customers_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.customers
+    OWNER to postgres;
+
+
+
+JSON Body:
+{
+  "firstName": "Pavan",
+  "lastName": "Mehta",
+  "email": "pavan@gmail.com",
+  "phone": "9988556699",
+  "active": true
+}
